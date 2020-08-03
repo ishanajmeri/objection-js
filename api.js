@@ -55,4 +55,19 @@ module.exports = (router) => {
 
     ctx.body = await query;
   });
+
+  router.post('/persons/:id/pets', async (ctx) => {
+    const personId = parseInt(ctx.params.id);
+    const pet = await Person.relatedQuery('pets')
+      .for(personId)
+      .insert(ctx.request.body);
+
+    ctx.body = pet;
+  });
+
+  router.get('/persons/:id/pets', async (ctx) => {
+    const query = Person.relatedQuery('pets').for(ctx.params.id);
+    const pets = await query;
+    ctx.body = pets;
+  });
 };

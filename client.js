@@ -23,7 +23,11 @@ const req = axios.create({
   //   lastName: 'Damon',
   //   age: 13,
   // });
-  await fetchChildren(matt.parent);
+  // await fetchChildren(matt.parent);
+  await insertPetForPerson(matt.children[0], {
+    name: 'chewy',
+    species: 'hamster',
+  });
 })().catch((err) => {
   console.error('error:', err);
 });
@@ -101,4 +105,9 @@ async function insertChildForPerson(person, child) {
 
 async function fetchChildren(person) {
   await req.get(`persons/${person.id}/children`);
+}
+
+async function insertPetForPerson(person, pet) {
+  const { data } = await req.post(`persons/${person.id}/pets`, pet);
+  console.log(data);
 }
