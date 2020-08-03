@@ -33,5 +33,26 @@ module.exports = (router) => {
     };
   });
 
-  // router.delete('/persons/')
+  router.delete('/persons/:id', async (ctx) => {
+    const numDeleted = await Person.query().findById(ctx.params.id).delete();
+
+    ctx.body = {
+      success: numDeleted === 1,
+    };
+  });
+
+  router.post('/persons/:id/children', async (ctx) => {
+    const personId = parseInt(ctx.params.id);
+    const child = await Person.relatedQuery('children')
+      .for(personId)
+      .insert(ctx.request.body);
+
+    ctx.body = child;
+  });
+
+  router.get('/persons/:id/children', async (ctx) => {
+    const query = Person.relatedQuery('children').for(ctx.params.id);
+
+    ctx.body = await query;
+  });
 };

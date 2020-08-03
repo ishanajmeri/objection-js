@@ -15,9 +15,15 @@ const req = axios.create({
 
 (async () => {
   const matt = await inserPersonWithRelations();
-  await fetchPeople();
-
-  await updatePerson(matt, { age: 41 });
+  // await fetchPeople();
+  // await updatePerson(matt, { age: 41 });
+  // await deletePerson(matt.children[0]);
+  // await insertChildForPerson(matt, {
+  //   firstName: 'Isabella',
+  //   lastName: 'Damon',
+  //   age: 13,
+  // });
+  await fetchChildren(matt.parent);
 })().catch((err) => {
   console.error('error:', err);
 });
@@ -81,4 +87,18 @@ async function fetchPeople() {
 
 async function updatePerson(person, patch) {
   await req.patch(`persons/${person.id}`, patch);
+}
+
+async function deletePerson(person) {
+  const { data } = await req.delete(`persons/${person.id}`);
+  console.log(data);
+}
+
+async function insertChildForPerson(person, child) {
+  const { data } = await req.post(`persons/${person.id}/children`, child);
+  console.log(data);
+}
+
+async function fetchChildren(person) {
+  await req.get(`persons/${person.id}/children`);
 }
