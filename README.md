@@ -1,15 +1,34 @@
-# Koa example project
+# Address-Book
 
-This is an example project that targets node 8.0.0 and up. The project is a simple Koa server with a REST API that demonstrates the basic functionalities of objection like models, queries, relations, eager loading and graph inserts.
+## Features
 
-Note that this is not an example of how to build a web server. It's an example of how to use objection in a web server. All other aspects are kept as simple and minimal as possible.
+- uses:
+  - React(create-react-app)
+  - Nodejs
+  - Express
+  - MongoDB
+- features:
+  - Create user
+  - Edit user
+  - Delete user
+  - Filter user
 
-# Install and run
+## Installation
 
-```sh
-git clone git@github.com:Vincit/objection.js.git objection
-cd objection/examples/koa
-npm install
-npm start
-node client.js
+- `git clone git@github.com:ishanajmeri/address-book.git`
+- `cd address-book`
+- `open termial and write the following :`
+
 ```
+npm install && npm start
+```
+
+- `cd api-node and write the following in termial :`
+
+```
+npm install && nodemon index.js
+```
+
+- `p.s open mongodb in another terminal`
+
+- visit http://localhost:3000
