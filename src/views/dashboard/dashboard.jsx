@@ -1,17 +1,8 @@
 import React from 'react';
 import { pxToVw, pxToVh, Theme } from '../../theme';
-
+import { Grid, Toolbar, makeStyles, Fab, Typography } from '@material-ui/core';
 import CardComponent from '../components/cardEmbossed';
-import {
-  Grid,
-  Input,
-  Toolbar,
-  makeStyles,
-  Fab,
-  Link,
-  CircularProgress,
-  Typography,
-} from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
 const styles = makeStyles((t) => ({
   root: {
@@ -227,6 +218,10 @@ inset -3px -4px 7px white`,
 
 const Dashboard = () => {
   const sty = styles();
+  const history = useHistory();
+  const handleWeeklyTest = () => {
+    history.push('/weeklytest');
+  };
 
   return (
     <div className={sty.root}>
@@ -282,7 +277,7 @@ const Dashboard = () => {
             >
               <Fab
                 variant="extended"
-                // onClick={register}
+                onClick={handleWeeklyTest}
                 classes={{ label: sty.label }}
                 className={sty.released}
               >

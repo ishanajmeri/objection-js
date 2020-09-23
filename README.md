@@ -19,6 +19,10 @@
 - `cd address-book`
 - `open termial and write the following :`
 
+apptitude
+logical
+english
+
 ```
 npm install && npm start
 ```

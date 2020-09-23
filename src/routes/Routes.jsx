@@ -5,6 +5,7 @@ import MainLayout from '../layout/layout';
 import Login from '../views/login/login';
 import NotFound from '../views/not-found/not-found';
 import Dashboard from '../views/dashboard/dashboard';
+import WeeklyTest from '../views/weeklyTest/weeklyTest';
 
 const Routes = () => {
   return (
@@ -20,6 +21,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/dashboard"
+      />
+      <RouteWithLayout
+        component={WeeklyTest}
+        exact
+        layout={MainLayout}
+        path="/weeklytest"
       />
       <Redirect from="/" exact to="/login" />
 

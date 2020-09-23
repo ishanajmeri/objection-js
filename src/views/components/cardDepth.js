@@ -1,6 +1,6 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import { pxToVh, pxToVw, Theme } from '../../theme';
+import { pxToVh, Theme } from '../../theme';
 import { makeStyles } from '@material-ui/core';
 
 const styles = makeStyles((t) => ({

@@ -14,9 +14,6 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import Home from '@material-ui/icons/HomeRounded';
-import Info from '@material-ui/icons/InfoRounded';
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import { Theme } from '../../theme';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
