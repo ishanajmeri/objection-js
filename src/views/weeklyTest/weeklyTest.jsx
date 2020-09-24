@@ -2,7 +2,8 @@ import React from 'react';
 import { pxToVw, Theme } from '../../theme';
 import { Grid, Toolbar, makeStyles, Fab, Typography } from '@material-ui/core';
 import CardComponent from '../components/cardEmbossed';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+
 const styles = makeStyles((t) => ({
   root: {
     width: '100%',
@@ -55,12 +56,17 @@ const styles = makeStyles((t) => ({
   },
 
   item: {
-    padding: '4% 3% 0 3%',
+    padding: '3% 3% 0 3%',
   },
 }));
 
 const WeeklyTest = () => {
   const sty = styles();
+  const history = useHistory();
+  const handleTest = (name) => {
+    history.push({ pathname: '/test', state: { name } });
+  };
+
   const Tests = [
     {
       name: 'Aptitude',
@@ -68,11 +74,11 @@ const WeeklyTest = () => {
     },
     {
       name: 'Logical',
-      questions: '',
+      questions: '20',
     },
     {
       name: 'English',
-      questions: '',
+      questions: '20',
     },
   ];
 
@@ -86,11 +92,19 @@ const WeeklyTest = () => {
         className={sty.container}
         style={{ padding: `10px ${pxToVw(30)} 0` }}
       >
-        {Tests.map((item) => {
+        {Tests.map((item, index) => {
           return (
-            <Grid item sm={6} className={sty.item} wrap="nowrap" spacing={2}>
+            <Grid
+              container
+              item
+              sm={10}
+              key={index}
+              className={sty.item}
+              wrap="nowrap"
+              spacing={2}
+            >
               <CardComponent>
-                <div style={{ padding: '10%', color: '#fff' }}>
+                <div style={{ padding: '7%', color: '#fff' }}>
                   <Typography
                     variant="h4"
                     style={{ color: '#fff', textAlign: 'center' }}
@@ -100,18 +114,32 @@ const WeeklyTest = () => {
                   </Typography>
                 </div>
                 <Grid
+                  container
                   style={{
                     padding: `0px ${pxToVw(10)} 20px`,
                   }}
                 >
-                  <Fab
-                    variant="extended"
-                    // onClick={register}
-                    classes={{ label: sty.label }}
-                    className={sty.released}
-                  >
-                    Get Test
-                  </Fab>
+                  <Grid item xs={12} sm={6}>
+                    <div style={{ /*  padding: '10%', */ color: '#fff' }}>
+                      <Typography
+                        variant="h6"
+                        style={{ color: '#fff', textAlign: 'center' }}
+                        className={sty.heading2}
+                      >
+                        Questions: {item.questions}
+                      </Typography>
+                    </div>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Fab
+                      variant="extended"
+                      onClick={() => handleTest(item.name)}
+                      classes={{ label: sty.label }}
+                      className={sty.released}
+                    >
+                      Take Test
+                    </Fab>
+                  </Grid>
                 </Grid>
               </CardComponent>
             </Grid>
