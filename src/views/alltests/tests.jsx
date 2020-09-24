@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 import CardComponent from '../components/cardEmbossed';
 import { useHistory } from 'react-router-dom';
+import ReactCountdownClock from 'react-countdown-clock';
 
 const styles = makeStyles((t) => ({
   root: {
@@ -63,12 +64,18 @@ const styles = makeStyles((t) => ({
     },
   },
   item: {
-    padding: '4% 3% 0 3%',
+    padding: '0 0 0 40px',
   },
 }));
 const shuffleArray = (array) => [...array].sort(() => Math.random() - 0.5);
 
-const RenderQuestions = ({ number, question, answers, correct_answer }) => {
+const RenderQuestions = ({
+  number,
+  question,
+  answers,
+  setnumber,
+  setUserAnswers,
+}) => {
   const sty = styles();
   const [value, setValue] = React.useState(null);
   const [userAnswers, setuserAnswers] = React.useState([]);
@@ -89,13 +96,13 @@ const RenderQuestions = ({ number, question, answers, correct_answer }) => {
     const user = { index: number, an: event.target.value };
     const buttonColor = { index: number, color: 'primary' };
     const foundIndex = userAnswers.findIndex((item) => item.index === number);
-    console.log(foundIndex);
     userAnswers[foundIndex] = user;
     buttons[foundIndex] = buttonColor;
-    // userAnswers[number].an = event.target.value;
-    // buttons[question].color = 'primary';
+    setUserAnswers(userAnswers);
   };
-  console.log(userAnswers);
+  const handleChangeQuestion = (index) => {
+    setnumber(index);
+  };
   return (
     <Grid container direction="row" justify="center" alignItems="center">
       <Grid
@@ -104,7 +111,7 @@ const RenderQuestions = ({ number, question, answers, correct_answer }) => {
         sm={6}
         xs={8}
         xl={8}
-        style={{ padding: `40px 0 0 0` }}
+        // style={{ padding: `40px 0 0 0` }}
       >
         <Grid
           container
@@ -156,7 +163,7 @@ const RenderQuestions = ({ number, question, answers, correct_answer }) => {
         sm={6}
         xs={4}
         xl={4}
-        style={{ padding: `40px 0 0 0` }}
+        // style={{ padding: `40px 0 0 0` }}
       >
         <Grid
           container
@@ -174,6 +181,7 @@ const RenderQuestions = ({ number, question, answers, correct_answer }) => {
                   <Grid key={index} item style={{ padding: '5px' }}>
                     <Button
                       variant="contained"
+                      onClick={() => handleChangeQuestion(index)}
                       color={item.color}
                       style={{ borderRadius: '50px' }}
                     >
@@ -193,9 +201,11 @@ const Tests = (props) => {
   const [questions, setquestions] = React.useState(null);
   const [number, setnumber] = React.useState(0);
   const [open, setopen] = React.useState(false);
+  const [userAnswers, setUserAnswers] = React.useState([]);
+  const [end, setend] = React.useState(false);
+  const [correct, setcorrect] = React.useState(0);
   const history = useHistory();
 
-  // const [userAnswers, setUserAnswers] = React.useState([]);
   React.useEffect(() => {
     try {
       fetch(
@@ -227,7 +237,18 @@ const Tests = (props) => {
     const nextQ = number - 1;
     setnumber(nextQ);
   };
-  // console.log(userAnswers);
+  const handleClock = () => {
+    console.log('object');
+  };
+  const handleSubmit = () => {
+    setend(true);
+    for (var i = 0; i < 19; i++) {
+      if (userAnswers[i].an === questions[i].correct_answer) {
+        setcorrect(correct + 1);
+      }
+    }
+  };
+
   return (
     <div className={sty.root}>
       <Toolbar style={{ background: Theme.boxColor }} />
@@ -271,6 +292,7 @@ const Tests = (props) => {
               </Typography>
               <Grid container justify="center">
                 <Grid
+                  container
                   justify="center"
                   item
                   style={{
@@ -287,6 +309,7 @@ const Tests = (props) => {
                   </Fab>
                 </Grid>
                 <Grid
+                  container
                   justify="center"
                   item
                   style={{
@@ -307,8 +330,19 @@ const Tests = (props) => {
           </div>
         </DialogContent>
       </Dialog>
-      {questions !== null && (
+      {questions !== null && !end && (
         <>
+          <Grid container justify="flex-end" style={{ padding: '15px' }}>
+            <CardComponent style={{ width: 70 }}>
+              <ReactCountdownClock
+                seconds={1800}
+                color="#fff"
+                alpha={0.9}
+                size={70}
+                onComplete={handleClock}
+              />
+            </CardComponent>
+          </Grid>
           <RenderQuestions
             number={number + 1}
             question={questions[number].question}
@@ -317,87 +351,110 @@ const Tests = (props) => {
               questions[number].correct_answer,
             ])}
             correct_answer={questions[number].correct_answer}
-            // userAnswers={userAnswers}
+            setnumber={setnumber}
+            setUserAnswers={setUserAnswers}
           />
+
+          <Grid
+            container
+            direction="row"
+            justify="flex-end"
+            // alignItems="center"
+            style={{ paddingTop: 12, paddingRight: 32 }}
+          >
+            {number !== 0 && (
+              <Grid
+                item
+                style={{
+                  padding: `0px ${pxToVw(15)} 20px`,
+                }}
+              >
+                <Fab
+                  variant="extended"
+                  onClick={handleBefore}
+                  classes={{ label: sty.label }}
+                  className={sty.released}
+                >
+                  Before
+                </Fab>
+              </Grid>
+            )}
+            {number !== 19 && (
+              <Grid
+                item
+                style={{
+                  padding: `0px ${pxToVw(15)} 20px`,
+                }}
+              >
+                <Fab
+                  variant="extended"
+                  onClick={handleNext}
+                  classes={{ label: sty.label }}
+                  className={sty.released}
+                >
+                  Next
+                </Fab>
+              </Grid>
+            )}
+            {number === 19 && (
+              <Grid
+                item
+                style={{
+                  padding: `0px ${pxToVw(15)} 20px`,
+                }}
+              >
+                <Fab
+                  variant="extended"
+                  onClick={handleSubmit}
+                  classes={{ label: sty.label }}
+                  className={sty.released}
+                >
+                  Submit Test
+                </Fab>
+              </Grid>
+            )}
+          </Grid>
+          <Grid
+            container
+            justify="flex-end"
+            item
+            style={{
+              padding: `0px ${pxToVw(15)} 20px`,
+            }}
+          >
+            <Fab
+              variant="extended"
+              onClick={handleSubmit}
+              classes={{ label: sty.label }}
+              className={sty.released}
+            >
+              End Test
+            </Fab>
+          </Grid>
         </>
       )}
-
-      <Grid
-        container
-        direction="row"
-        justify="flex-end"
-        // alignItems="center"
-        style={{ paddingBottom: 22, paddingTop: 12, paddingRight: 32 }}
-      >
-        {number !== 0 && (
-          <Grid
-            item
-            style={{
-              padding: `0px ${pxToVw(15)} 20px`,
-            }}
-          >
-            <Fab
-              variant="extended"
-              onClick={handleBefore}
-              classes={{ label: sty.label }}
-              className={sty.released}
-            >
-              Before
-            </Fab>
-          </Grid>
-        )}
-        {number !== 19 && (
-          <Grid
-            item
-            style={{
-              padding: `0px ${pxToVw(15)} 20px`,
-            }}
-          >
-            <Fab
-              variant="extended"
-              onClick={handleNext}
-              classes={{ label: sty.label }}
-              className={sty.released}
-            >
-              Next
-            </Fab>
-          </Grid>
-        )}
-        {number === 19 && (
-          <Grid
-            item
-            style={{
-              padding: `0px ${pxToVw(15)} 20px`,
-            }}
-          >
-            <Fab
-              variant="extended"
-              onClick={handleNext}
-              classes={{ label: sty.label }}
-              className={sty.released}
-            >
-              Submit Test
-            </Fab>
-          </Grid>
-        )}
-      </Grid>
-      <Grid
-        container
-        justify="flex-end"
-        item
-        style={{
-          padding: `0px ${pxToVw(15)} 20px`,
-        }}
-      >
-        <Fab
-          variant="extended"
-          onClick={handleNext}
-          classes={{ label: sty.label }}
-          className={sty.released}
+      {end && (
+        <Grid
+          style={{
+            paddingTop: '15%',
+            paddingLeft: '35%',
+            height: 150,
+            width: 400,
+          }}
         >
-          End Test
-        </Fab>
-      </Grid>
+          <CardComponent>
+            <div style={{ padding: '10%', color: '#fff' }}>
+              <Typography
+                variant="h6"
+                style={{ color: '#fff', textAlign: 'center' }}
+                className={sty.heading}
+              >
+                Total correct answers are {correct}.
+              </Typography>
+            </div>
+          </CardComponent>
+        </Grid>
+      )}
     </div>
   );
 };

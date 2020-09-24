@@ -219,8 +219,8 @@ inset -3px -4px 7px white`,
 const Dashboard = () => {
   const sty = styles();
   const history = useHistory();
-  const handleWeeklyTest = () => {
-    history.push('/weeklytest');
+  const handleTest = (item) => {
+    history.push(`/${item}`);
   };
 
   return (
@@ -250,7 +250,7 @@ const Dashboard = () => {
             >
               <Fab
                 variant="extended"
-                // onClick={register}
+                onClick={() => handleTest('merittest')}
                 classes={{ label: sty.label }}
                 className={sty.released}
               >
@@ -277,7 +277,7 @@ const Dashboard = () => {
             >
               <Fab
                 variant="extended"
-                onClick={handleWeeklyTest}
+                onClick={() => handleTest('weeklytest')}
                 classes={{ label: sty.label }}
                 className={sty.released}
               >

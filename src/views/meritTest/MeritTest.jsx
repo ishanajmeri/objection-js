@@ -59,7 +59,7 @@ const styles = makeStyles((t) => ({
   },
 }));
 
-const WeeklyTest = () => {
+const MeritTest = () => {
   const sty = styles();
   const history = useHistory();
   const handleTest = (name) => {
@@ -68,15 +68,13 @@ const WeeklyTest = () => {
 
   const Tests = [
     {
-      name: 'Aptitude',
+      name: 'Qriocty Box Scholership',
+      stream: 'mechanical',
       questions: '20',
     },
     {
-      name: 'Logical',
-      questions: '20',
-    },
-    {
-      name: 'English',
+      name: 'QBox scholership test',
+      stream: 'civil',
       questions: '20',
     },
   ];
@@ -112,7 +110,23 @@ const WeeklyTest = () => {
                     {item.name}
                   </Typography>
                 </div>
-                <Grid container>
+                <Grid
+                  container
+                  // style={{
+                  //   padding: `0px ${pxToVw(10)} 20px`,
+                  // }}
+                >
+                  <Grid item xs={12} sm={6}>
+                    <div style={{ color: '#fff' }}>
+                      <Typography
+                        variant="h6"
+                        style={{ color: '#fff', textAlign: 'center' }}
+                        className={sty.heading2}
+                      >
+                        Stream: {item.stream}
+                      </Typography>
+                    </div>
+                  </Grid>
                   <Grid item xs={12} sm={6}>
                     <div style={{ color: '#fff' }}>
                       <Typography
@@ -151,4 +165,4 @@ const WeeklyTest = () => {
   );
 };
 
-export default WeeklyTest;
+export default MeritTest;

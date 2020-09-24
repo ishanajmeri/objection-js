@@ -7,6 +7,7 @@ import NotFound from '../views/not-found/not-found';
 import Dashboard from '../views/dashboard/dashboard';
 import WeeklyTest from '../views/weeklyTest/weeklyTest';
 import Tests from '../views/alltests/tests';
+import MeritTest from '../views/meritTest/MeritTest';
 
 const Routes = () => {
   return (
@@ -28,6 +29,12 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/weeklytest"
+      />
+      <RouteWithLayout
+        component={MeritTest}
+        exact
+        layout={MainLayout}
+        path="/merittest"
       />
       <RouteWithLayout
         component={Tests}
