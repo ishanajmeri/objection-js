@@ -103,11 +103,11 @@ const MeritTest = () => {
               <CardComponent>
                 <div style={{ padding: '7%', color: '#fff' }}>
                   <Typography
-                    variant="h4"
+                    variant="h5"
                     style={{ color: '#fff', textAlign: 'center' }}
                     className={sty.heading}
                   >
-                    {item.name}
+                    Title: {item.name}
                   </Typography>
                 </div>
                 <Grid

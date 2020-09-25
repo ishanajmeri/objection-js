@@ -89,7 +89,10 @@ const RenderQuestions = ({
     }
     setuserAnswers(userAnswers);
     setbuttons(buttons);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const handleReview = () => {};
+
   const handleChange = (event) => {
     setValue(event.target.value);
     // console.log(event.target);
@@ -101,8 +104,11 @@ const RenderQuestions = ({
     setUserAnswers(userAnswers);
   };
   const handleChangeQuestion = (index) => {
+    setValue(userAnswers[index].an);
     setnumber(index);
   };
+  // console.log(userAnswers);
+  // console.log(value);
   return (
     <Grid container direction="row" justify="center" alignItems="center">
       <Grid
@@ -192,6 +198,21 @@ const RenderQuestions = ({
               })}
             </Grid>
           </div>
+        </Grid>
+        <Grid
+          item
+          style={{
+            padding: `0px ${pxToVw(15)} 20px`,
+          }}
+        >
+          <Fab
+            variant="extended"
+            onClick={handleReview}
+            classes={{ label: sty.label }}
+            className={sty.released}
+          >
+            Review
+          </Fab>
         </Grid>
       </Grid>
     </Grid>
@@ -379,6 +400,7 @@ const Tests = (props) => {
                 </Fab>
               </Grid>
             )}
+
             {number !== 19 && (
               <Grid
                 item

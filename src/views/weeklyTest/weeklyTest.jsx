@@ -105,11 +105,11 @@ const WeeklyTest = () => {
               <CardComponent>
                 <div style={{ padding: '7%', color: '#fff' }}>
                   <Typography
-                    variant="h4"
+                    variant="h5"
                     style={{ color: '#fff', textAlign: 'center' }}
                     className={sty.heading}
                   >
-                    {item.name}
+                    Title: {item.name}
                   </Typography>
                 </div>
                 <Grid container>
@@ -121,6 +121,17 @@ const WeeklyTest = () => {
                         className={sty.heading2}
                       >
                         Questions: {item.questions}
+                      </Typography>
+                    </div>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <div style={{ color: '#fff' }}>
+                      <Typography
+                        variant="h6"
+                        style={{ color: '#fff', textAlign: 'center' }}
+                        className={sty.heading2}
+                      >
+                        Ends In: 2 Days
                       </Typography>
                     </div>
                   </Grid>
