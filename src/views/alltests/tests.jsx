@@ -6,16 +6,14 @@ import {
   makeStyles,
   Fab,
   Typography,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Button,
   Dialog,
   DialogContent,
+  Button,
 } from '@material-ui/core';
 import CardComponent from '../components/cardEmbossed';
 import { useHistory } from 'react-router-dom';
 import ReactCountdownClock from 'react-countdown-clock';
+import RenderQuestions from './renderQuestions';
 
 const styles = makeStyles((t) => ({
   root: {
@@ -69,155 +67,6 @@ const styles = makeStyles((t) => ({
 }));
 const shuffleArray = (array) => [...array].sort(() => Math.random() - 0.5);
 
-const RenderQuestions = ({
-  number,
-  question,
-  answers,
-  setnumber,
-  setUserAnswers,
-}) => {
-  const sty = styles();
-  const [value, setValue] = React.useState(null);
-  const [userAnswers, setuserAnswers] = React.useState([]);
-  const [buttons, setbuttons] = React.useState([]);
-  React.useEffect(() => {
-    const buttons = [];
-    const userAnswers = [];
-    for (var i = 0; i < 20; i++) {
-      buttons.push({ index: i + 1, color: 'default' });
-      userAnswers.push({ index: i + 1, an: 'default' });
-    }
-    setuserAnswers(userAnswers);
-    setbuttons(buttons);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  const handleReview = () => {};
-
-  const handleChange = (event) => {
-    setValue(event.target.value);
-    // console.log(event.target);
-    const user = { index: number, an: event.target.value };
-    const buttonColor = { index: number, color: 'primary' };
-    const foundIndex = userAnswers.findIndex((item) => item.index === number);
-    userAnswers[foundIndex] = user;
-    buttons[foundIndex] = buttonColor;
-    setUserAnswers(userAnswers);
-  };
-  const handleChangeQuestion = (index) => {
-    setValue(userAnswers[index].an);
-    setnumber(index);
-  };
-  // console.log(userAnswers);
-  // console.log(value);
-  return (
-    <Grid container direction="row" justify="center" alignItems="center">
-      <Grid
-        container
-        item
-        sm={6}
-        xs={8}
-        xl={8}
-        // style={{ padding: `40px 0 0 0` }}
-      >
-        <Grid
-          container
-          item
-          sm={10}
-          // key={index}
-          className={sty.item}
-          wrap="nowrap"
-          spacing={2}
-        >
-          <CardComponent>
-            <div style={{ padding: '10%', color: '#fff' }}>
-              <Typography
-                variant="h6"
-                style={{ color: '#fff', textAlign: 'center' }}
-                className={sty.heading}
-              >
-                Q {number}] {question}
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                style={{ lineHeight: 2, paddingTop: 22 }}
-              >
-                <RadioGroup
-                  aria-label="gender"
-                  name="options"
-                  value={value}
-                  onChange={handleChange}
-                >
-                  {answers.map((item, index) => {
-                    return (
-                      <FormControlLabel
-                        key={index}
-                        value={item}
-                        control={<Radio />}
-                        label={item}
-                      />
-                    );
-                  })}
-                </RadioGroup>
-              </Typography>
-            </div>
-          </CardComponent>
-        </Grid>
-      </Grid>
-      <Grid
-        container
-        item
-        sm={6}
-        xs={4}
-        xl={4}
-        // style={{ padding: `40px 0 0 0` }}
-      >
-        <Grid
-          container
-          item
-          sm={10}
-          // key={index}
-          className={sty.item}
-          wrap="nowrap"
-          spacing={2}
-        >
-          <div style={{ padding: '10%', color: '#fff' }}>
-            <Grid container justify="flex-end">
-              {buttons.map((item, index) => {
-                return (
-                  <Grid key={index} item style={{ padding: '5px' }}>
-                    <Button
-                      variant="contained"
-                      onClick={() => handleChangeQuestion(index)}
-                      color={item.color}
-                      style={{ borderRadius: '50px' }}
-                    >
-                      {item.index}
-                    </Button>
-                  </Grid>
-                );
-              })}
-            </Grid>
-          </div>
-        </Grid>
-        <Grid
-          item
-          style={{
-            padding: `0px ${pxToVw(15)} 20px`,
-          }}
-        >
-          <Fab
-            variant="extended"
-            onClick={handleReview}
-            classes={{ label: sty.label }}
-            className={sty.released}
-          >
-            Review
-          </Fab>
-        </Grid>
-      </Grid>
-    </Grid>
-  );
-};
 const Tests = (props) => {
   const [questions, setquestions] = React.useState(null);
   const [number, setnumber] = React.useState(0);
@@ -226,7 +75,15 @@ const Tests = (props) => {
   const [end, setend] = React.useState(false);
   const [correct, setcorrect] = React.useState(0);
   const history = useHistory();
-
+  const [buttons, setbuttons] = React.useState([]);
+  React.useEffect(() => {
+    const buttons = [];
+    for (var i = 0; i < 20; i++) {
+      buttons.push({ index: i + 1, color: 'default' });
+    }
+    setbuttons(buttons);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   React.useEffect(() => {
     try {
       fetch(
@@ -262,12 +119,20 @@ const Tests = (props) => {
     console.log('object');
   };
   const handleSubmit = () => {
-    setend(true);
-    for (var i = 0; i < 19; i++) {
+    for (var i = 0; i < 20; i++) {
       if (userAnswers[i].an === questions[i].correct_answer) {
         setcorrect(correct + 1);
+        // console.log(i, 'first');
+        const onebutton = { index: i + 1, color: 'green' };
+        buttons[i] = onebutton;
+      } else {
+        // console.log(i, 'second');
+        const onebutton = { index: i + 1, color: 'red' };
+        buttons[i] = onebutton;
       }
     }
+    // console.log(buttons);
+    setend(true);
   };
 
   return (
@@ -457,24 +322,63 @@ const Tests = (props) => {
       )}
       {end && (
         <Grid
-          style={{
-            paddingTop: '15%',
-            paddingLeft: '35%',
-            height: 150,
-            width: 400,
-          }}
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+          style={{ paddingTop: '12%' }}
         >
-          <CardComponent>
-            <div style={{ padding: '10%', color: '#fff' }}>
-              <Typography
-                variant="h6"
-                style={{ color: '#fff', textAlign: 'center' }}
-                className={sty.heading}
-              >
-                Total correct answers are {correct}.
-              </Typography>
+          <Grid item style={{ paddingLeft: '3%' }}>
+            <CardComponent style={{ height: 'auto', width: 400 }}>
+              <div style={{ padding: '10%', color: '#fff' }}>
+                <Typography
+                  variant="h6"
+                  style={{ color: '#fff', textAlign: 'center' }}
+                  className={sty.heading}
+                >
+                  Total correct answers are {correct}.
+                </Typography>
+              </div>
+              <Grid item /* xs={12} sm={6} */>
+                <div style={{ color: '#fff', paddingBottom: '7%' }}>
+                  <Typography
+                    variant="h6"
+                    style={{ color: '#fff', textAlign: 'center' }}
+                    className={sty.heading2}
+                  >
+                    Your percentage is 87%.
+                  </Typography>
+                </div>
+              </Grid>
+            </CardComponent>
+          </Grid>
+          <Grid
+            container
+            item
+            sm={10}
+            className={sty.item}
+            wrap="nowrap"
+            spacing={2}
+            style={{ width: 400 }}
+          >
+            <div style={{ padding: '10% 10% 10% 0', color: '#fff' }}>
+              <Grid container justify="flex-end">
+                {buttons.map((item, index) => {
+                  return (
+                    <Grid key={index} item style={{ padding: '5px' }}>
+                      <Button
+                        variant="contained"
+                        // onClick={() => handleChangeQuestion(index)}
+                        style={{ borderRadius: '50px', background: item.color }}
+                      >
+                        {item.index}
+                      </Button>
+                    </Grid>
+                  );
+                })}
+              </Grid>
             </div>
-          </CardComponent>
+          </Grid>
         </Grid>
       )}
     </div>
