@@ -77,7 +77,14 @@ const RenderQuestions = ({
     setbuttons(buttons);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const handleReview = () => {};
+  const handleReview = (item) => {
+    const buttonColor = { index: item, color: '#FFFF00' };
+    const foundIndex = userAnswers.findIndex((item) => item.index === number);
+    buttons[foundIndex] = buttonColor;
+    // setValue(userAnswers[item - 1].an);
+    // setnumber(item - 1);
+    // console.log(buttons);
+  };
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -168,13 +175,17 @@ const RenderQuestions = ({
           <div style={{ padding: '10%', color: '#fff' }}>
             <Grid container justify="flex-end">
               {buttons.map((item, index) => {
+                console.log(buttons);
                 return (
                   <Grid key={index} item style={{ padding: '5px' }}>
                     <Button
                       variant="contained"
                       onClick={() => handleChangeQuestion(index)}
                       color={item.color}
-                      style={{ borderRadius: '50px' }}
+                      style={{
+                        borderRadius: '50px',
+                        background: item.color,
+                      }}
                     >
                       {item.index}
                     </Button>
@@ -192,7 +203,7 @@ const RenderQuestions = ({
         >
           <Fab
             variant="extended"
-            onClick={handleReview}
+            onClick={() => handleReview(number)}
             classes={{ label: sty.label }}
             className={sty.released}
           >
