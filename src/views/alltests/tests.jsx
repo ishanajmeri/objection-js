@@ -8,7 +8,6 @@ import {
   Typography,
   Dialog,
   DialogContent,
-  Button,
 } from '@material-ui/core';
 import CardComponent from '../components/cardEmbossed';
 import { useHistory } from 'react-router-dom';
@@ -73,7 +72,7 @@ const Tests = (props) => {
   const [open, setopen] = React.useState(false);
   const [userAnswers, setUserAnswers] = React.useState([]);
   const [end, setend] = React.useState(false);
-  const [correct, setcorrect] = React.useState(0);
+  // const [correct, setcorrect] = React.useState(0);
   const history = useHistory();
   const [buttons, setbuttons] = React.useState([]);
   React.useEffect(() => {
@@ -119,20 +118,23 @@ const Tests = (props) => {
     console.log('object');
   };
   const handleSubmit = () => {
+    var correct = 0;
     for (var i = 0; i < 20; i++) {
       if (userAnswers[i].an === questions[i].correct_answer) {
-        setcorrect(correct + 1);
-        // console.log(i, 'first');
+        correct = correct + 1;
         const onebutton = { index: i + 1, color: 'green' };
         buttons[i] = onebutton;
       } else {
-        // console.log(i, 'second');
         const onebutton = { index: i + 1, color: 'red' };
         buttons[i] = onebutton;
       }
     }
-    // console.log(buttons);
+    const mark = (correct * 100) / 20;
     setend(true);
+    history.push({
+      pathname: '/testend',
+      state: { correct, mark, questions, userAnswers, buttons },
+    });
   };
 
   return (
@@ -319,67 +321,6 @@ const Tests = (props) => {
             </Fab>
           </Grid>
         </>
-      )}
-      {end && (
-        <Grid
-          container
-          direction="column"
-          justify="center"
-          alignItems="center"
-          style={{ paddingTop: '12%' }}
-        >
-          <Grid item style={{ paddingLeft: '3%' }}>
-            <CardComponent style={{ height: 'auto', width: 400 }}>
-              <div style={{ padding: '10%', color: '#fff' }}>
-                <Typography
-                  variant="h6"
-                  style={{ color: '#fff', textAlign: 'center' }}
-                  className={sty.heading}
-                >
-                  Total correct answers are {correct}.
-                </Typography>
-              </div>
-              <Grid item /* xs={12} sm={6} */>
-                <div style={{ color: '#fff', paddingBottom: '7%' }}>
-                  <Typography
-                    variant="h6"
-                    style={{ color: '#fff', textAlign: 'center' }}
-                    className={sty.heading2}
-                  >
-                    Your percentage is 87%.
-                  </Typography>
-                </div>
-              </Grid>
-            </CardComponent>
-          </Grid>
-          <Grid
-            container
-            item
-            sm={10}
-            className={sty.item}
-            wrap="nowrap"
-            spacing={2}
-            style={{ width: 400 }}
-          >
-            <div style={{ padding: '10% 10% 10% 0', color: '#fff' }}>
-              <Grid container justify="flex-end">
-                {buttons.map((item, index) => {
-                  return (
-                    <Grid key={index} item style={{ padding: '5px' }}>
-                      <Button
-                        variant="contained"
-                        // onClick={() => handleChangeQuestion(index)}
-                        style={{ borderRadius: '50px', background: item.color }}
-                      >
-                        {item.index}
-                      </Button>
-                    </Grid>
-                  );
-                })}
-              </Grid>
-            </div>
-          </Grid>
-        </Grid>
       )}
     </div>
   );

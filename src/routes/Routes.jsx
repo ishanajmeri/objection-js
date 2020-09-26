@@ -8,6 +8,8 @@ import Dashboard from '../views/dashboard/dashboard';
 import WeeklyTest from '../views/weeklyTest/weeklyTest';
 import Tests from '../views/alltests/tests';
 import MeritTest from '../views/meritTest/MeritTest';
+import Question from '../views/question/question';
+import TestEnd from '../views/alltests/testend';
 
 const Routes = () => {
   return (
@@ -41,6 +43,18 @@ const Routes = () => {
         exact
         layout={MainLayout}
         path="/test"
+      />
+      <RouteWithLayout
+        component={TestEnd}
+        exact
+        layout={MainLayout}
+        path="/testend"
+      />
+      <RouteWithLayout
+        component={Question}
+        exact
+        layout={MainLayout}
+        path="/question/:id"
       />
       <Redirect from="/" exact to="/login" />
 
